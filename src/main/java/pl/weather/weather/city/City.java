@@ -2,9 +2,11 @@ package pl.weather.weather.city;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.text.Collator;
+import java.util.Locale;
 
 @Entity
-public class City {
+public class City implements Comparable<City> {
     @Id
     private Long id;
     private String name;
@@ -81,5 +83,12 @@ public class City {
 
     public void setIso3(String iso3) {
         this.iso3 = iso3;
+    }
+
+    @Override
+    public int compareTo(City o) {
+        return Collator
+                .getInstance(new Locale(iso2, iso2.toUpperCase()))
+                .compare(this.name, o.name);
     }
 }

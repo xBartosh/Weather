@@ -15,9 +15,13 @@
     </div>
   </header>
   <main>
-    <h2 th:text="|Weather ${country}, ${city}|">Weather Poland, Warsaw</h2>
-  </main>
+    <div class="city-info">
+      <h2 th:text="${city}" class="city"></h2>
+      <img th:src="@{${countryFlag.url}}" src="https://countryflagsapi.com/png/pl">
+    </div>
+    <p th:each="climate: ${forecast.climateList}" th:text="|${climate.temperature} ${climate.visibility} ${climate.weather} ${climate.wind}|"></p>
 
+  </main>
   <footer>
     <p>Weather 2022 <i class="fas fa-copyright"></i> weather.pl</p>
   </footer>

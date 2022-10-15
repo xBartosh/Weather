@@ -1,21 +1,21 @@
 package pl.weather.weather;
 
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.weather.weather.city.City;
 import pl.weather.weather.city.CityService;
 import pl.weather.weather.country.Country;
+import pl.weather.weather.country.CountryFlag;
 import pl.weather.weather.country.CountryNotFoundException;
 import pl.weather.weather.country.CountryService;
+import pl.weather.weather.forecast.Forecast;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -34,8 +34,14 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("weather/{country}")
-    String getCountry(@PathVariable String country, Model model){
+    @PostMapping("/search")
+    String searchWeather(@RequestParam String country, RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("country", country);
+        return "redirect:weather";
+    }
+
+    @GetMapping("/weather")
+    String getCountry(@RequestParam String country, Model model){
         try {
             List<City> cities = countryService.findCitiesByCountryName(country);
             model.addAttribute("cities", cities);
@@ -48,20 +54,30 @@ public class HomeController {
     }
 
     @PostMapping("/search/country")
-    String searchWeather(@RequestParam String country, @RequestParam String city){
-        return "redirect:/weather/" + country + "/" + city;
+    String searchWeather(@RequestParam String country,
+                         @RequestParam String city,
+                         RedirectAttributes redirectAttributes){
+
+        redirectAttributes.addAttribute("city", city);
+        return "redirect:/weather/" + country;
     }
 
-    @GetMapping("/weather/{country}/{city}")
-    String getWeather(@PathVariable String country, @PathVariable String city, Model model){
+    @GetMapping("/weather/{country}")
+    String getWeather(@PathVariable String country, @RequestParam String city, Model model){
+        if(!(countryService.existsByName(country) && cityService.existsByName(city))){
+            return "error";
+        }
+
+        Forecast forecast = cityService.getForecastForCity(city);
+        CountryFlag countryFlag = countryService.findCountryFlagByName(country);
+        model.addAttribute("forecast", forecast);
+        model.addAttribute("countryFlag", countryFlag);
         model.addAttribute("country", country);
         model.addAttribute("city", city);
+
         return "weather-city";
     }
 
-    @PostMapping("/search")
-    String searchWeather(@RequestParam String country){
-        return "redirect:weather/" + country;
-    }
+
 
 }

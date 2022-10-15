@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface CountryRepository extends CrudRepository<Country, String> {
     Optional<Country> findByName(String name);
+    boolean existsByName(String name);
 }
