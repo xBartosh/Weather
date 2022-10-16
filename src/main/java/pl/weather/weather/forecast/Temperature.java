@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Temperature {
-    private String temp;
-    private String feels_like;
+    private Integer temp;
+    private Integer feels_like;
     private String pressure;
     private String humidity;
 
     @JsonCreator
-    public Temperature(@JsonProperty("temp") String temp,
-                       @JsonProperty("feels_like") String feels_like,
+    public Temperature(@JsonProperty("temp") Integer temp,
+                       @JsonProperty("feels_like") Integer feels_like,
                        @JsonProperty("pressure") String pressure,
                        @JsonProperty("humidity") String humidity) {
         this.temp = temp;
@@ -22,19 +22,19 @@ public class Temperature {
         this.humidity = humidity;
     }
 
-    public String getTemp() {
+    public Integer getTemp() {
         return temp;
     }
 
-    public void setTemp(String temp) {
+    public void setTemp(Integer temp) {
         this.temp = temp;
     }
 
-    public String getFeels_like() {
+    public Integer getFeels_like() {
         return feels_like;
     }
 
-    public void setFeels_like(String feels_like) {
+    public void setFeels_like(Integer feels_like) {
         this.feels_like = feels_like;
     }
 
