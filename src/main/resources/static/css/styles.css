@@ -1,3 +1,8 @@
+:root{
+    --gradient: linear-gradient(135deg, #72edf2 10%, #5151e5 100%);
+}
+
+
 html {
     background-color: whitesmoke;
 }
@@ -38,10 +43,6 @@ img {
     gap: 10px;
 }
 
-.city {
-    font-size: 30px;
-}
-
 .header {
     display: flex;
     flex-direction: column;
@@ -53,7 +54,7 @@ img {
 .fa-cloud {
     margin-top: 30px;
     font-size: 15em;
-    color: #273c5a;
+    color: #8bbced;
     animation-duration: 3s;
 }
 
